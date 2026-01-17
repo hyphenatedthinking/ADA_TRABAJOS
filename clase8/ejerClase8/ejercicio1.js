@@ -12,7 +12,7 @@
 
 const prompt = require ('prompt-sync')();
 
-// 1. 
+//1. 
 let numero = parseFloat (prompt (`Ingrese un número:`));
 
 //2.
