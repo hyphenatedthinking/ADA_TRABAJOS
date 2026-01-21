@@ -12,7 +12,7 @@
 
 // IMPORTAR LIBRERÍA
 
-const prompt = require ('prompt-sync')();
+const prompt = require('prompt-sync')();
 
 // 1. Estructura de Datos
 
@@ -31,7 +31,7 @@ let libros = [
     titulo: "Parásitos perfectos",
     autor: "Luis Carlos Barragán Castro",
     anio: 2021,
-    genero: "Cuentos Sci-Fi",
+    genero: "Cuentos, Sci-Fi",
     disponible: true
   },
   {
@@ -39,15 +39,15 @@ let libros = [
     titulo: "Manifiesto Cyborg",
     autor: "Donna Haraway",
     anio: 1991,
-    genero: "Ensayo",
+    genero: "Ensayo, Post-Humanismo",
     disponible: false
   },
   {
     id: 3,
-    titulo: "A la salud de los muertos",
+    titulo: "A la salud de los muertos: relatos de quienes quedan",
     autor: "Vincianne Despret",
-    anio: 2023,
-    genero: "Ensayo",
+    anio: 2022,
+    genero: "Ensayo filosófico, Post-humanismo",
     disponible: true
   },
   {
@@ -55,7 +55,7 @@ let libros = [
     titulo: "En caso de amor",
     autor: "Anne Dufourmantelle",
     anio: 2025,
-    genero: "Ensayo",
+    genero: "Ensayo filosófico",
     disponible: true
   },
   {
@@ -63,47 +63,47 @@ let libros = [
     titulo: "Testo Yonqui",
     autor: "Paul B. Preciado",
     anio: 2021,
-    genero: "Filosofía queer",
+    genero: "Ensayo filosófico, Filosofía queer",
     disponible: true
   },
   {
     id: 6,
-    titulo: "Ímpetu involutivo",
-    autor: "Juan Luis Barragán",
-    anio: 2023,
-    genero: "Post-humanismo",
+    titulo: "Ímpetu involutivo, Afectos y conversaciones entre plantas, insectos y científicos",
+    autor: "Carla Hustak y Natasha Myers",
+    anio: 2012,
+    genero: "Ensayo filosófico, Epistemología, Evolucionismo",
     disponible: false
   },
   {
     id: 7,
-    titulo: "Otro libro A",
-    autor: "Autor A",
-    anio: 2010,
-    genero: "Sci-Fi",
+    titulo: "Las cosas que perdimos en el fuego",
+    autor: "Mariana Enriquez",
+    anio: 2016,
+    genero: "Cuentos, Terror",
     disponible: false
   },
   {
     id: 8,
-    titulo: "Otro libro B",
-    autor: "Autor B",
-    anio: 2011,
-    genero: "Sci-Fi",
+    titulo: "Witches, Witch-Hunting and Women",
+    autor: "Silvia Federici",
+    anio: 2018,
+    genero: "Ensayo filosófico, Feminismo, Idioma: inglés",
     disponible: false
   },
   {
     id: 9,
-    titulo: "Otro libro C",
-    autor: "Autor C",
-    anio: 2012,
-    genero: "Ensayo",
+    titulo: "Caliban y la bruja",
+    autor: "Silvia Federici",
+    anio: 2004,
+    genero: "Ensayo filosófico, Feminismo",
     disponible: true
   },
   {
     id: 10,
-    titulo: "Otro libro D",
-    autor: "Autor D",
-    anio: 2013,
-    genero: "Ensayo",
+    titulo: "Primavera con Monique Wittig: el devenir lesbiano con el dildo en la mano de Spinoza transfeminista",
+    autor: "Leonor Silvestri",
+    anio: 2019,
+    genero: "Ensayo filosófico, Filosofia queer",
     disponible: false
   }
 ];
@@ -166,17 +166,19 @@ let usuarios = [
 // (nota: sirve solo en caso de que entre un libro nuevo ya que para libros devueltos debo realizar otra función)
 // agregarLibro es una función que debe usarse una sola vez por libro, lo mismo cuando declaramos cada libro anteriormente. De otra manera estaría duplicando los libros en la biblioteca lo cual causaría una falla en el programa
 
-function agregarLibro(id,titulo,autor,anio,género) {
+function agregarLibro(id,titulo,autor,anio,genero) {
    let nuevoLibro = {
     id : id,
     titulo : titulo,
     autor : autor,
     anio : anio,
-    género: género,
+    genero: genero,
     disponible: true
    };
 
 libros.push(nuevoLibro);
+console.log(`El libro ha sido agregado con éxito!`);
+
 
 }
 
@@ -185,28 +187,38 @@ libros.push(nuevoLibro);
 // b) Crear una función buscarLibro(criterio, valor) que permita buscar libros por título, autor o género utilizando el algoritmo de búsqueda lineal.
 
 function buscarLibro(criterio, valor) {
+  const resultados = [];
+  criterio = criterio.toLowerCase();
+
     for (let i = 0; i < libros.length; i++) {
-        if (libros[i][criterio] === valor) {
-            console.log(libros[i]);
+        const libroValor = libros[i][criterio];
+        if (libroValor && libroValor.toString().toLowerCase() === valor.toLowerCase()){
+          resultados.push(libros[i]);
         }
+      }
+
+    if (resultados.length === 0){
+      console.log(`Lo sentimos, no se encontró el libro`);
     }
+    return resultados;
+  
 }
 
 // 2.c)
 
 // c) Desarrollar una función ordenarLibros(criterio) que ordene los libros por título o año utilizando el algoritmo de ordenamiento burbuja (bubble sort) y luego muestre los libros ordenados en la consola.
 function ordenarLibros(criterio) {
- const criterioNorm = String(criterio).toLowerCase();
+ let criterioNorm = String(criterio).toLowerCase();
+ criterioNorm = criterioNorm.replace("í","i"); //en caso de que el usuario use í
 
- // Hacemos copia para no mutar el array original (opcional)
+ // Copia para no cambiar el array original
  const arr = [...libros];
 
- // BUBBLE SORT (ordenamiento burbuja)
+ // BUBBLE SORT 
  for (let i = 0; i < arr.length - 1; i++) {
    for (let j = 0; j < arr.length - 1 - i; j++) {
      const a = arr[j]; // accedo al array en la posicion j
      const b = arr[j + 1];
-
      let debeCambiar = false;
 
      if (criterioNorm === "titulo") {
@@ -214,7 +226,7 @@ function ordenarLibros(criterio) {
      } else if (criterioNorm === "anio") {
        debeCambiar = a.anio > b.anio;
      } else {
-       console.log(" Criterio inválido. Usar 'titulo' o 'anio'.");
+       console.log(" Criterio inválido. Usar 'titulo' o 'año'.");
        return;
      }
 
@@ -225,6 +237,7 @@ function ordenarLibros(criterio) {
      }
    }
  }
+ return arr;
 }
 
 // 2.d)
@@ -262,10 +275,13 @@ function borrarLibro(id) {
 
 function registrarUsuario(nombre,email){
    let nuevoUsuario = {
-    nombre : nombre,
-    email : email,
+    id: usuarios.length + 1,
+    nombre: nombre,
+    email: email,
+    librosPrestados: []
    };
-usuarios.push(nuevoUsuario);
+   usuarios.push(nuevoUsuario);
+   console.log(`El usuario ha sido registrado correctamente`);
 }
 
 // 3. b) MOSTRAR TODOS LOS USUARIOS
@@ -279,9 +295,10 @@ function mostrarTodosLosUsuarios() {
 function buscarUsuario(email){
     for (let i = 0; i < usuarios.length; i++) {
         if (usuarios[i].email === email) {
-            console.log(usuarios[i]);
+            return(usuarios[i]);
         }
     }
+    return null;
 }
 
 // 3. d) BORRAR USUARIO POR SU EMAIL
@@ -315,80 +332,47 @@ function borrarUsuario(email) {
 
 // 4. a)
 function prestarLibro(idLibro, idUsuario){
-   let libro = null;
-   let usuario = null;
+  const libro = libros.find(l => l.id === idLibro);
+  const usuario = usuarios.find(u => u.id === idUsuario);
 
-   // Buscar el libro
-   for (let i = 0; i < libros.length; i++) {
-       if (libros[i].id === idLibro) {
-           libros = libros[i];
-           break;
-       }
-   }
-   if (libros === null){
-       console.log(`Lo sentimos, el libro que desea no está disponible en este momento`);
-       return;
-   }
+  if (!libro) {
+    console.log("Libro no encontrado");
+    return;
+  }
+  if (!usuario) {
+    console.log("Usuario no encontrado");
+    return;
+  }
+  if (!libro.disponible) {
+    console.log("Lo sentimos, el libro que desea no está disponible en este momento");
+    return;
+  }
 
-   // Buscar al usuario
-   for (let i = 0; i < usuarios.length; i++){
-     if (usuarios[i].id === idUsuario){
-       usuarios = usuarios[i];
-       break;
-     }
-   }
+  libro.disponible = false;
+  usuario.librosPrestados.push(idLibro);
 
-   if (usuarios === null){
-       console.log(`Usuario no encontrado`);
-       return;
-   }
-
-// Prestar libro
-libro.disponible = false;
-usuarios.librosPrestados.push(libro);
-
-console.log(`Libro prestado correctamente!`);
-
+  console.log("Libro prestado correctamente!");
 }
 
-
-
-// 4. b)
 function devolverLibro(idLibro, idUsuario){
-   let libro = null;
-   let usuario = null;
+  const libro = libros.find(l => l.id === idLibro);
+  const usuario = usuarios.find(u => u.id === idUsuario);
 
-   // Buscar el libro
-   for (let i = 0; i < libros.length; i++) {
-     if (libros[i].id === idLibro) {
-       libro = libros[i];
-       break;
-   }
- }
+  if (!libro || !usuario) {
+    console.log("Datos incorrectos");
+    return;
+  }
 
+  const index = usuario.librosPrestados.indexOf(idLibro);
+  if (index === -1){
+    console.log("El libro no ha sido prestado por este usuario");
+    return;
+  }
 
-   if (libros === null){
-       console.log(`Lo sentimos, el libro que desea no está disponible en este momento`);
-       return;
-   }
+  usuario.librosPrestados.splice(index, 1);
+  libro.disponible = true;
 
-   // Buscar al usuario
-   for (let i = 0; i < usuarios.length; i++){
-     if (usuarios[i].id === idUsuario){
-       usuarios = usuarios[i];
-       break;
-     }
-   }
-
-   if (usuarios === null){
-       console.log(`Usuario no encontrado`);
-       return;
-   }
-
-   usuarios.LibrosPrestados.splice(idLibro, 1);
-   libro.disponible = true;
-
-   console.log(`Libro devuelto correctamente. Gracias!`);
+  console.log("Libro devuelto correctamente. Gracias!");
 
 }
 
@@ -403,62 +387,54 @@ function devolverLibro(idLibro, idUsuario){
 // 5. a) REPORTE DE LIBROS
 
 function generarReporteLibros() {
-  // ✔ Cantidad total de libros
+  // Cantidad total de libros
   const totalLibros = libros.length;
 
-  // ✔ Cantidad de libros prestados (disponible === false)
-  const librosPrestados = libros.filter(function (l) {
-    return l.disponible === false;
-  });
+  // Cantidad de libros prestados
+  const librosPrestados = libros.filter(l => !l.disponible);
   const cantidadPrestados = librosPrestados.length;
 
-  // ✔ Cantidad de libros por género (reduce para contar)
-  const librosPorGenero = libros.reduce(function (acum, libro) {
-    const g = libro.genero;
+  // Cantidad de libros por género (contando cada género por separado)
+  const librosPorGenero = libros.reduce((acum, libro) => {
+    // separar los géneros por coma y quitar espacios
+    const generos = libro.genero.split(',').map(g => g.trim());
 
-    if (acum[g] === undefined) {
-      acum[g] = 1;
-    } else {
-      acum[g] = acum[g] + 1;
-    }
+    generos.forEach(g => {
+      if (!acum[g]) {
+        acum[g] = 1;
+      } else {
+        acum[g] += 1;
+      }
+    });
 
     return acum;
   }, {});
 
-  // ✔ Libro más antiguo y más nuevo
-  // map para obtener solo los años
-  const anios = libros.map(function (libro) {
-    return libro.anio;
-  });
+  // Libro más antiguo y más nuevo
+  const anios = libros.map(libro => libro.anio);
 
-  // reducimos para encontrar min y max sin usar Math.min/Math.max
-  const minMax = anios.reduce(function (acum, anio) {
+  const minMax = anios.reduce((acum, anio) => {
     if (anio < acum.min) acum.min = anio;
     if (anio > acum.max) acum.max = anio;
     return acum;
   }, { min: anios[0], max: anios[0] });
 
-  const libroMasAntiguo = libros.filter(function (l) {
-    return l.anio === minMax.min;
-  });
-
-  const libroMasNuevo = libros.filter(function (l) {
-    return l.anio === minMax.max;
-  });
+  const libroMasAntiguo = libros.filter(l => l.anio === minMax.min);
+  const libroMasNuevo = libros.filter(l => l.anio === minMax.max);
 
   // Armamos el reporte final
   const reporte = {
-    totalLibros: totalLibros,
-    cantidadPrestados: cantidadPrestados,
-    librosPorGenero: librosPorGenero,
-    libroMasAntiguo: libroMasAntiguo, // puede haber más de uno si comparten año
-    libroMasNuevo: libroMasNuevo      // puede haber más de uno si comparten año
+    totalLibros,
+    cantidadPrestados,
+    librosPorGenero,
+    libroMasAntiguo, 
+    libroMasNuevo    
   };
 
   console.log(reporte);
-
   return reporte;
 }
+
 
 //6. Identificación Avanzada de libros
 // a) Implementar una función librosConPalabrasEnTitulo() que identifique y muestre
@@ -500,7 +476,7 @@ function librosConPalabrasEnTitulo(){
 
 // 7. a)
 function calcularEstadisticas(){
-   if (libros.lenght === 0){
+   if (libros.length === 0){
        console.log(`Lo sentimos. En este momento no ningún libro en la biblioteca`);
        return;
    }
@@ -561,6 +537,8 @@ function normalizarDatos (){
         usuario.email = usuario.email.toLowerCase();
     }
    });
+
+   console.log(`Los datos han sido normalizados correctamente!`);
 }
 
 
@@ -568,30 +546,12 @@ function normalizarDatos (){
 // a) Implementar una función menuPrincipal() que muestre un menú de opciones al usuario y permita interactuar con el sistema utilizando prompt().
 // b) El menú debe incluir opciones para todas las funcionalidades anteriores y utilizar estructuras de control (if, switch, ciclos) para manejar la lógica.
 
-function preguntar(texto) {
- return new Promise(resolve => {
-     return rl.question(texto, resolve);
- });
-}
-
-const readline = require("readline");
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-function preguntar(texto) {
-  return new Promise((resolve) => {
-    rl.question(texto, resolve);
-  });
-}
-
-async function menuPrincipal() {
+function menuPrincipal() {
  let salir = false;
 
-    while (!salir) {
+   while (!salir) {
    console.log(`
+
 =========================
    MENÚ PRINCIPAL
 =========================
@@ -602,8 +562,8 @@ Literatura Sci-Fi, Post-humanismo, Feminismo y Filosofía queer,
 Esperamos que encuentres lo que estás buscando!
 
 1) Agregar libro
-2) Buscar libro (titulo/autor/genero)
-3) Ordenar libros (titulo/anio) [bubble sort]
+2) Buscar libro (Tipea la palabra: título o autor o género)
+3) Ordenar libros (Titulo / Año) 
 4) Borrar libro
 5) Registrar usuario
 6) Mostrar todos los usuarios
@@ -611,133 +571,115 @@ Esperamos que encuentres lo que estás buscando!
 8) Borrar usuario
 9) Prestar libro
 10) Devolver libro
-11) Generar reporte libros (map/filter/reduce)
+11) Generar reporte libros 
 12) Libros con +1 palabra en título
-13) Calcular estadísticas (Math)
-14) Normalizar datos (Strings)
+13) Calcular estadísticas 
+14) Normalizar datos 
 0) Salir
 `);
 
-   const opcion = (await preguntar("Elegí una opción: ")).trim();
+   const opcion = prompt(`Opción:....`);
 
    switch (opcion) {
     
       //Agregar libro
-      case "1": {
-       const titulo = await preguntar("Título: ");
-       const autor = await preguntar("Autor: ");
-       const anio = await preguntar("Año: ");
-       const genero = await preguntar("Género: ");
-       agregarLibro(undefined, titulo, autor, Number(anio), genero);
-       break;
-     }
-  
+       case "1": 
+        agregarLibro(
+          libros.length + 1, 
+          prompt("Título: "),
+          prompt("Autor: "),
+          Number(prompt("Año: ")),
+          prompt("Género: "),
+        );
+        break;
+     
       //Buscar libro
-     case "2": {
-       const criterio = await preguntar("Criterio (titulo/autor/genero): ");
-       const valor = await preguntar("Valor a buscar: ");
-       const res = buscarLibro(criterio, valor);
-       console.table(res);
-       break;
-     }
-
+       case "2": 
+        console.table(
+          buscarLibro(
+            prompt("Critero: ").toLowerCase(),
+            prompt("Valor:")
+          )
+        );
+        break;
+     
      //OrdernarLibros
-     case "3": {
-       const criterio = await preguntar("Ordenar por (titulo/anio): ");
-       ordenarLibros(criterio);
-       break;
-     }
-
+       case "3": 
+        console.table(ordenarLibros(prompt("Título o Año: ")));
+        break;
+     
      //Borrar libro
-     case "4": {
-       const id = await preguntar("ID del libro a borrar: ");
-       borrarLibro(Number(id));
-       break;
-     }
+       case "4": 
+        borrarLibro(Number(prompt("Id: ")));
+        break;
    
      //Registrar usuario
-     case "5": {
-       const nombre = await preguntar("Nombre: ");
-       const email = await preguntar("Email: ");
-       registrarUsuario(nombre, email);
-       break;
-     }
-
+        case "5": 
+        registrarUsuario(prompt("Nombre: "), prompt("Email: "));
+        break;
+     
      //Mostrar todos los usuarios
-     case "6": {
-       console.table(mostrarTodosLosUsuarios());
-       break;
-     }
-
+        case "6": 
+        console.table(usuarios);
+        break;
+    
      //Buscar usuario
-     case "7": {
-       const email = await preguntar("Email del usuario: ");
-       const user = buscarUsuario(email);
-       if (!user) console.log(" Usuario no encontrado.");
-       else console.log(user);
-       break;
-     }
-
+        case "7": 
+        console.log(buscarUsuario(prompt("E-mail: ")));
+        break;
+     
      //Borrar usuario
-     case "8": {
-       const nombre = await preguntar("Nombre del usuario: ");
-       const email = await preguntar("Email del usuario: ");
-       borrarUsuario(nombre, email);
-       break;
-     }
+        case "8": 
+        borrarUsuario(prompt("Email usuario: "));
+        break;
 
      //Prestar libro
-     case "9": {
-       const idLibro = await preguntar("ID Libro: ");
-       const idUsuario = await preguntar("ID Usuario: ");
-       prestarLibro(Number(idLibro), Number(idUsuario));
-       break;
-     }
+        case "9": 
+        prestarLibro(
+          Number(prompt("Id libro: ")),
+          Number(prompt("Id usuario: "))
+        );
+        break;
 
      //Devolver libro
-     case "10": {
-       const idLibro = await preguntar("ID Libro: ");
-       const idUsuario = await preguntar("ID Usuario: ");
-       devolverLibro(Number(idLibro), Number(idUsuario));
-       break;
-     }
+        case "10": 
+        devolverLibro(
+          Number(prompt("Id libro: ")),
+          Number(prompt("Id usuario: "))
+        );
+        break;
 
      //Generar reporte de libros
-     case "11": {
-       generarReporteLibros();
-       break;
-     }
-
+         case "11": 
+         generarReporteLibros();
+         break;
+     
      //Libros con +1 palabras en título
-     case "12": {
-       librosConPalabrasEnTitulo();
-       break;
-     }
-
+         case "12": 
+         librosConPalabrasEnTitulo();
+         break;
+     
      //Calcula estadísticamente los libros en base a los años de edición
-     case "13": {
-       calcularEstadisticas();
-       break;
-     }
-
+         case "13": 
+         calcularEstadisticas();
+         break;
+     
      //Normalizar datos
-     case "14": {
-       normalizarDatos();
-       break;
-     }
-
+         case "14": 
+         normalizarDatos();
+         break;
+  
      //Salir
-     case "0": {
-       salir = true;
-       break;
-     }
+         case "0": 
+         salir = true;
+         console.log("Saliendo...");
+         break;
+     
 
      default:
        console.log(" Opción inválida.");
-   }}
-
-    rl.close();
-    console.log("Saliendo...");
+    }
+  }
 }
 
 menuPrincipal()
